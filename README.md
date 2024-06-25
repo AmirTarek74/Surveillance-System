@@ -9,10 +9,9 @@ This repository contains the code for a surveillance and security system using E
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Modules](#modules)
 - [Dependencies](#dependencies)
 - [Contributing](#contributing)
-- [License](#license)
+
 
 ## Overview
 
@@ -64,5 +63,54 @@ surveillance_system/
 │   └── utils.py
 │
 └── main.py
+```
 
 
+## Installation
+1. Clone the repository:
+```plaintext
+git clone https://github.com/yourusername/surveillance_system.git
+cd surveillance_system
+```
+2. Create a virtual environment and activate it:
+```plaintext
+python -m venv venv
+source venv/bin/activate   # On Windows: venv\Scripts\activate
+```
+3. Install the required dependencies:
+```plaintext
+pip install -r requirements.txt
+```
+
+
+## Usage
+1. Set up the ESP32-CAMs: Ensure your ESP32-CAMs are configured and connected to your network.
+2. Start the frame capture module:
+```plaintext
+python main.py
+```
+3. Monitor the output: The system will log the process of capturing frames, recognizing actions, detecting faces, and summarizing movements.
+4. Review the results: Check the BASE_OUTPUT_FOLDER directory for saved frames and summary videos.
+
+   
+## Dependencies
+- OpenCV: For image and video processing.
+- NumPy: For numerical operations.
+- WebSockets: For communication between ESP32-CAMs and the server.
+- asyncio: For asynchronous programming.
+- aiofiles: For asynchronous file operations.
+- concurrent.futures: For concurrent programming.
+- ZeroConf: For network service discovery.
+- PyTorch: For deep learning models.
+- EfficientNet: For feature extraction in action recognition.
+- YOLOv8: For face detection.
+- ResNet: For face embedding extraction.
+
+  
+## Contributing
+Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
+1. Fork the repository
+2. Create a new branch.
+3. Make your changes and commit them.
+4. Push your changes to your fork.
+5. Submit a pull request.
