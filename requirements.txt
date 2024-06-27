@@ -1,0 +1,21 @@
+#Pre proccesssing
+cv2
+numpy
+os
+threading
+datetime
+
+#ESP Configuration
+websockets
+asyncio
+aiofiles
+concurrent
+ZeroConf
+socket
+threading
+
+#Deep Learning Models
+torch
+torchvision
+ultralytics
+facenet_pytorch
