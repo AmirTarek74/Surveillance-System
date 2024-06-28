@@ -129,7 +129,8 @@ if __name__ == "__main__":
     frame_capture = FrameCapture()
     frame_capture_thread = threading.Thread(target=frame_capture.start)
     try:
-        capture_and_process_frames()
+        #capture_and_process_frames()
+        summary()
     #summary()
     except KeyboardInterrupt: 
         print("Main program Terminated.")
