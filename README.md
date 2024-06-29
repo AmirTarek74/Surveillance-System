@@ -44,7 +44,7 @@ surveillance_system/
 │
 ├── FaceDetection  /
 │   ├── __init__.py
-│   └── FaceDetection.py.py
+│   └── FaceDetection.py
 │
 ├── FaceRecognition/
 │   ├── __init__.py
