@@ -69,7 +69,7 @@ surveillance_system/
 ## Installation
 1. Clone the repository:
 ```plaintext
-git clone https://github.com/yourusername/surveillance_system.git
+git clone https://github.com/AmirTarek74/Surveillance-System.git
 cd surveillance_system
 ```
 2. Create a virtual environment and activate it:
