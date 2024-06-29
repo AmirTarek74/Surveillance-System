@@ -70,7 +70,7 @@ surveillance_system/
 1. Clone the repository:
 ```plaintext
 git clone https://github.com/AmirTarek74/Surveillance-System.git
-cd surveillance_system
+cd Surveillance-System
 ```
 2. Create a virtual environment and activate it:
 ```plaintext
