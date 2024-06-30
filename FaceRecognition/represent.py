@@ -1,8 +1,14 @@
 import torchvision 
 from PIL import Image
-class FaceRepresention:
+from facenet_pytorch import  InceptionResnetV1
+import torch
 
-    def represent(self,model,device,face):
+class FaceRepresention:
+    def __init__(self) :
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.model = InceptionResnetV1(pretrained='vggface2').eval().to(self.device)
+    
+    def represent(self,face):
 
         transform = torchvision.transforms.Compose(
             [
@@ -11,8 +17,8 @@ class FaceRepresention:
                 
             ])
         face = Image.fromarray(face)
-        face = transform(face).to(device)
-        embdding = model(face.unsqueeze(0)).detach()
+        face = transform(face).to(self.device)
+        embdding = self.model(face.unsqueeze(0)).detach()
 
 
         return embdding

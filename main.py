@@ -7,13 +7,12 @@ from datetime import datetime
 import time 
 import torch
 from torchvision import transforms
-from ultralytics import YOLO
-from facenet_pytorch import  InceptionResnetV1
+
 
 from Shared.utils import *
 from ActionRecognition import ActionRecognition,ActionRecognizer
 from FaceDetection import FaceDetector
-from FaceVerification import FaceVerification
+from FaceVerifiy import FaceVerification
 from FaceRecognition import FaceRepresention
 from Summarization import Summary
 from FrameCapture import FrameCapture
@@ -36,10 +35,10 @@ def capture_and_process_frames():
     
     # Face Detection model settings
     face_detector = FaceDetector()  #returns faces in the image
-    face_detector_model = YOLO('Weights/YOLODetection.pt').to(device)
+    
 
     #face represention model settings
-    face_repsenter_model = InceptionResnetV1(pretrained='vggface2').eval().to(device)
+    
     face_repsenter = FaceRepresention()
 
     # face verification settings
@@ -50,24 +49,32 @@ def capture_and_process_frames():
     OUTPUT_DIR = '-----'
     summarizer = Summary()
     
-
+    CAMS = ['cam1','cam2','cam3']
     detected_frames = []
+    isAbnormal = False
     while True:
         ###  frames captured from 3 cams
-        frames = get_latest_frames('cam1')
-        if frames!=-1:
-            #if None not in frames:
-            frames = [transform(frame) for frame in frames]
-            frames = torch.stack(frames, dim=0)
-            action = action_recognizer.recognize_action(action_model,device,frames)
-            if action==1:
-                # write how to handel abnomral here
-                print('Abnormal')
-                break
-            else:
-                print('Normal')
-            #time.sleep(1)
-    return 
+        for cam_identifier in CAMS:
+            frames = get_latest_frames(cam_identifier)
+            detected_frames = []
+            if frames!=-1:
+                #if None not in frames:
+                trans_frames = [transform(frame) for frame in frames]
+                stacked_frames = torch.stack(trans_frames, dim=0)
+                action = action_recognizer.recognize_action(action_model,device,stacked_frames)
+                if action==1:
+                    # write how to handel abnomral here
+                    print('Abnormal')
+                    isAbnormal = True
+                    detected_frames = frames
+                    break
+                else:
+                    print('Normal')
+                time.sleep(0.5)
+        if isAbnormal:
+            break
+    wanted_Faces = AbnormalAcionFaces(detected_frames,face_detector,face_repsenter,face_verifcation)
+    summarizer.summarize(OUTPUT_DIR,videos_dir,wanted_Faces,face_detector,face_repsenter,face_verifcation) 
 
 def summary():
     videos_dir = 'VIDEOS'
@@ -77,11 +84,10 @@ def summary():
     img = cv2.imread('1.jpg')
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     face_detector = FaceDetector()  #returns faces in the image
-    face_detector_model = YOLO('Weights/YOLODetection.pt').to(device)
-    face_repsenter_model = InceptionResnetV1(pretrained='vggface2').eval().to(device)
     face_repsenter = FaceRepresention()
+    face_verifcation = FaceVerification()
     summarizer = Summary()
-    summarizer.summarize(OUTPUT_DIR,videos_dir,img,face_detector_model,face_repsenter_model,device)
+    summarizer.summarize(OUTPUT_DIR,videos_dir,img,face_detector,face_repsenter,face_verifcation)
 
 
 def get_latest_frames(cam_identifier, num_frames=20):
@@ -124,6 +130,9 @@ def get_latest_frames(cam_identifier, num_frames=20):
 
     return latest_frames
 
+
+    
+
 if __name__ == "__main__":
     BASE_OUTPUT_FOLDER = "ESP32-CAM"
     frame_capture = FrameCapture()
@@ -131,6 +140,7 @@ if __name__ == "__main__":
     try:
         #capture_and_process_frames()
         summary()
+        
     #summary()
     except KeyboardInterrupt: 
         print("Main program Terminated.")

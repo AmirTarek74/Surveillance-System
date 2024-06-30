@@ -1,8 +1,13 @@
+from ultralytics import YOLO
+import torch
 
-
-class FaceDetector:
-    def detect_faces(self,model, image):
-        results = model(image)
+class FaceDetector():
+    def __init__(self):
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        self.model = YOLO('Weights/YOLODetection.pt').to(self.device)
+        
+    def detect_faces(self,image):
+        results = self.model(image)
         faces = []
         gap = 0            #some gap between model output and face in the input image
         for res in results:

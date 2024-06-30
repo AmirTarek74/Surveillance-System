@@ -1,7 +1,7 @@
 import torch
 
 class ActionRecognizer:
-
+    
     def recognize_action(self, model,device,frames):
         model.eval()
         with torch.no_grad():

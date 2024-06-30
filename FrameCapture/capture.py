@@ -148,19 +148,12 @@ class FrameCapture:
         self.thread = threading.Thread(target=self._run_event_loop)
         self.thread.start()
         
-        #loop = asyncio.new_event_loop()
-        #asyncio.set_event_loop(loop)
-        #loop.run_until_complete(self.start_server)
-        #loop.run_forever()
         
-        #asyncio.get_event_loop().run_until_complete(self.start_server)
-        #asyncio.get_event_loop().run_forever()
 
     def stop(self):
         if self.loop:
             self.loop.call_soon_threadsafe(self.loop.stop)
-        #if self.start_server:
-        #    self.start_server.close()
+        
         if self.thread:
             self.thread.join()
         self.zeroconf.unregister_service(self.service_info)
@@ -168,12 +161,3 @@ class FrameCapture:
         
         
 
-        """if self.loop:
-            self.loop.call_soon_threadsafe(self.loop.stop)
-        self.zeroconf.unregister_service(self.service_info)
-        self.zeroconf.close()
-        if self.thread:
-            self.thread.join()"""
-            
-        #self.zeroconf.unregister_service(self.service_info)
-        #self.zeroconf.close()

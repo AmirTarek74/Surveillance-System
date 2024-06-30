@@ -2,6 +2,7 @@ import torch
 import numpy as np 
 from typing import Any, Dict, Union
 
+
 def load_checkpoints(path):
     '''
         Function to load checkpoints form saved model
@@ -60,3 +61,25 @@ def find_euclidean_distance(
     euclidean_distance = np.sum(np.multiply(euclidean_distance, euclidean_distance))
     euclidean_distance = np.sqrt(euclidean_distance)
     return euclidean_distance
+
+
+def AbnormalAcionFaces(detected_frames,detector,repsention,verification):
+    faces = []
+   
+    for frame in detected_frames:
+        detected_faces = detector.detect_faces(frame)
+        face_exist = False
+        for face in detected_faces:
+            if len(faces)!=0:
+                for face2 in faces:
+                    if verification.verify(repsention.represent(face),repsention.represent(face2)):
+                        face_exist = True
+                        break
+                if not face_exist:
+                    faces.append(face)
+            else:
+                faces.append(face)
+
+                
+    return faces
+

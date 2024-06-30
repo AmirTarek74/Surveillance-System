@@ -1,16 +1,11 @@
-from FaceRecognition import FaceRepresention
-from FaceDetection import FaceDetector
-from FaceVerification import FaceVerification
 import os 
 import cv2
 
 class Summary:
 
-    def summarize(self,OUTPUT_DIR,videos_dir,ABNORMAL_Frame,detector_model,represent_model,device):
+    def summarize(self,OUTPUT_DIR,videos_dir,wanted_faces,detector,repsention,verification):
 
-        detector = FaceDetector()
-        repsention = FaceRepresention()
-        verification = FaceVerification()
+        
         cam1_videos_path = os.path.join(videos_dir,'cam1')
         cam2_videos_path = os.path.join(videos_dir,'cam2')
         cam3_videos_path = os.path.join(videos_dir,'cam3')
@@ -19,8 +14,8 @@ class Summary:
         cam2_videos = os.listdir(cam2_videos_path)
         cam3_videos = os.listdir(cam3_videos_path)
         
-        wanted_faces = detector.detect_faces(detector_model,ABNORMAL_Frame)
-        embddings = [repsention.represent(represent_model,device,face) for face in wanted_faces]
+       
+        embddings = [repsention.represent(face) for face in wanted_faces]
 
         distance_function = 'cosine'
         fps = 30
@@ -72,17 +67,17 @@ class Summary:
                 if not ret1 and not ret2 and not ret3:
                     break
                 if ret1:
-                    faces1 = detector.detect_faces(detector_model,frame1)
-                    embddings1 = [repsention.represent(represent_model,device,face) for face in faces1] 
+                    faces1 = detector.detect_faces(frame1)
+                    embddings1 = [repsention.represent(face) for face in faces1] 
                 
 
                 if ret2:
-                    faces2 = detector.detect_faces(detector_model,frame2)
-                    embddings2 = [repsention.represent(represent_model,device,face) for face in faces2]
+                    faces2 = detector.detect_faces(frame2)
+                    embddings2 = [repsention.represent(face) for face in faces2]
                 
                 if ret3:
-                    faces3 = detector.detect_faces(detector_model,frame3)
-                    embddings3 = [repsention.represent(represent_model,device,face) for face in faces3]
+                    faces3 = detector.detect_faces(frame3)
+                    embddings3 = [repsention.represent(face) for face in faces3]
                 
 
                 for idx,true_embdding  in enumerate(embddings):
