@@ -12,7 +12,7 @@ from torchvision import transforms
 from Shared.utils import *
 from ActionRecognition import ActionRecognition,ActionRecognizer
 from FaceDetection import FaceDetector
-from FaceVerifiy import FaceVerification
+from FaceVerification import FaceVerification
 from FaceRecognition import FaceRepresention
 from Summarization import Summary
 from FrameCapture import FrameCapture
