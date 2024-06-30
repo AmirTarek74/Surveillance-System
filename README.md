@@ -44,7 +44,7 @@ surveillance_system/
 │
 ├── FaceDetection  /
 │   ├── __init__.py
-│   └── FaceDetection.py.py
+│   └── FaceDetection.py
 │
 ├── FaceRecognition/
 │   ├── __init__.py
@@ -69,8 +69,8 @@ surveillance_system/
 ## Installation
 1. Clone the repository:
 ```plaintext
-git clone https://github.com/yourusername/surveillance_system.git
-cd surveillance_system
+git clone https://github.com/AmirTarek74/Surveillance-System.git
+cd Surveillance-System
 ```
 2. Create a virtual environment and activate it:
 ```plaintext
