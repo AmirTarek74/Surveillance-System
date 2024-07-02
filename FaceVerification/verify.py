@@ -7,7 +7,7 @@ class FaceVerification:
 
         if metric=='euclidean':
             threshold = 0.9
-            distance = find_euclidean_distance(emb1.numpy().reshape(-1,),emb2.numpy().reshape(-1,))
+            distance = find_euclidean_distance(emb1.cpu().numpy().reshape(-1,),emb2.cpu().numpy().reshape(-1,))
             if distance < threshold:
                 return 1
             else:
@@ -15,7 +15,7 @@ class FaceVerification:
         
         elif metric=='cosine':
             threshold = 0.52
-            distance = find_cosine_distance(emb1.numpy().reshape(-1,),emb2.numpy().reshape(-1,))
+            distance = find_cosine_distance(emb1.cpu().numpy().reshape(-1,),emb2.cpu().numpy().reshape(-1,))
             if distance < threshold:
                 return 1
             else:
