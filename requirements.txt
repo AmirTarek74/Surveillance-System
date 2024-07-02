@@ -1,5 +1,5 @@
 #Pre proccesssing
-cv2
+opencv-python
 numpy
 os
 threading
@@ -10,7 +10,7 @@ websockets
 asyncio
 aiofiles
 concurrent
-ZeroConf
+zeroconf
 socket
 threading
 
