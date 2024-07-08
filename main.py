@@ -31,6 +31,7 @@ def capture_and_process_frames():
     action_model = ActionRecognition(num_classes).to(device)
     chk = load_checkpoints('Weights/ActionRecognition.pt')
     action_model.load_state_dict(chk['model_state_dict'])
+    action_model.eval()
     action_recognizer = ActionRecognizer()
     
     # Face Detection model settings
@@ -59,9 +60,10 @@ def capture_and_process_frames():
             detected_frames = []
             if frames!=-1:
                 #if None not in frames:
-                trans_frames = [transform(frame) for frame in frames]
+                trans_frames = [transform(frame).to(device) for frame in frames]
                 stacked_frames = torch.stack(trans_frames, dim=0)
                 action = action_recognizer.recognize_action(action_model,device,stacked_frames)
+                
                 if action==1:
                     # write how to handel abnomral here
                     print('Abnormal')
@@ -76,19 +78,10 @@ def capture_and_process_frames():
     wanted_Faces = AbnormalAcionFaces(detected_frames,face_detector,face_repsenter,face_verifcation)
     summarizer.summarize(OUTPUT_DIR,videos_dir,wanted_Faces,face_detector,face_repsenter,face_verifcation) 
 
-def summary():
-    videos_dir = 'VIDEOS'
-    OUTPUT_DIR = 'summarized'
-    if not os.path.exists(OUTPUT_DIR):
-        os.mkdir(OUTPUT_DIR)
-    img = cv2.imread('1.jpg')
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    face_detector = FaceDetector()  #returns faces in the image
-    face_repsenter = FaceRepresention()
-    face_verifcation = FaceVerification()
-    summarizer = Summary()
-    summarizer.summarize(OUTPUT_DIR,videos_dir,img,face_detector,face_repsenter,face_verifcation)
 
+  
+            
+  
 
 def get_latest_frames(cam_identifier, num_frames=20):
     """
@@ -138,8 +131,8 @@ if __name__ == "__main__":
     frame_capture = FrameCapture()
     frame_capture_thread = threading.Thread(target=frame_capture.start)
     try:
-        #capture_and_process_frames()
-        summary()
+        capture_and_process_frames()
+       
         
     #summary()
     except KeyboardInterrupt: 
