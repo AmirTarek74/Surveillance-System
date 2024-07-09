@@ -46,11 +46,11 @@ def capture_and_process_frames():
     face_verifcation = FaceVerification()
     
     #summarization settings
-    videos_dir = '----'
-    OUTPUT_DIR = '-----'
+    videos_dir = 'ESP32-CAM'
+    OUTPUT_DIR = 'OUTPUT_VIDEOS'
     summarizer = Summary()
     
-    CAMS = ['cam1','cam2','cam3']
+    CAMS = ['CAM-1','CAM-2','CAM-3']
     detected_frames = []
     isAbnormal = False
     while True:
