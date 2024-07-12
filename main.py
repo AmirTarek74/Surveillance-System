@@ -49,7 +49,8 @@ def capture_and_process_frames():
     videos_dir = 'ESP32-CAM'
     OUTPUT_DIR = 'OUTPUT_VIDEOS'
     summarizer = Summary()
-    
+    cams_output = {'CAM-1':[],'CAM-2':[],'CAM-3':[]}
+    avg_samples = 4
     CAMS = ['CAM-1','CAM-2','CAM-3']
     detected_frames = []
     isAbnormal = False
@@ -63,15 +64,19 @@ def capture_and_process_frames():
                 trans_frames = [transform(frame).to(device) for frame in frames]
                 stacked_frames = torch.stack(trans_frames, dim=0)
                 action = action_recognizer.recognize_action(action_model,device,stacked_frames)
-                
-                if action==1:
-                    # write how to handel abnomral here
-                    print('Abnormal')
-                    isAbnormal = True
-                    detected_frames = frames
-                    break
+                if len(cams_output[cam_identifier]<avg_samples):
+                    cams_output[cam_identifier].append(action)
                 else:
-                    print('Normal')
+                    if round(sum(cams_output[cam_identifier])/avg_samples)==1:
+                        print('Abnormal')
+                        isAbnormal = True
+                        detected_frames = frames
+                        break
+                    else:
+                        temp = cams_output[cam_identifier].pop(0)
+                        cams_output[cam_identifier].append(action)
+                        print("Normal")
+                
                 time.sleep(0.5)
         if isAbnormal:
             break
